@@ -26,10 +26,13 @@ Every skill runs in three phases and never changes product behavior:
 
 1. **Audit** (read-only): real stack, surfaces, boundaries and risks. Stops here.
 2. **Install** (after you approve): `AGENTS.md` plus `GUARDRAILS_PROFILE.md`,
-   `SYSTEM_MAP.md`, `DECISIONS.md`, `HISTORY.md`, `TESTING.md` and eight small
-   workflow docs (plan, implement, review, security, test, architecture,
-   owner brief, release).
+   `SYSTEM_MAP.md`, `DECISIONS.md`, `HISTORY.md`, `TESTING.md` and `WORKFLOW.md`.
 3. **Report**: what was created, kept and archived, and what to check by hand.
+
+`WORKFLOW.md` (plan, implement, review, security, test, architecture, owner
+brief, release) has a fixed block that is identical in every project, plus a
+short *Specifics of this project* section. Upgrading means replacing the fixed
+block; the agent never rewrites it, so it does not drift or grow.
 
 Pass `PROJECT_MODE=company` or `PROJECT_MODE=personal` to set how strict
 change control should be. Unknown defaults to strict.
@@ -39,10 +42,10 @@ change control should be. Unknown defaults to strict.
 Agents asked to keep code "understandable" tend to write paragraph-long comments
 full of history: how a bug was found, what the old version did, which idea was
 rejected. The installed rules keep comments to 1–2 lines of *why* and move the
-rest to `HISTORY.md` / `DECISIONS.md`, referenced by a stable ID:
+rest to `HISTORY.md` / `DECISIONS.md`, referenced by a stable anchor:
 
 ```php
-// Signed URL, not a stored token. See DECISIONS.md#d-012
+// Invite links never share the resume route. See HISTORY.md#invite-link
 ```
 
 They also forbid personal data, machine-local paths and AI-tool metadata in
@@ -67,8 +70,9 @@ Then ask your agent: *"Run project-guardrails-bootstrap on this repo."*
 
 ## Contributing
 
-Edit `shared/` for rules common to all skills and run `scripts/sync-shared.sh`
-to copy them into each skill. A new stack gets its own
+Edit `shared/` (common rules, workflow core, per-stack checks) and run
+`scripts/sync-shared.sh` to rebuild each skill's `references/`. Bump
+`shared/WORKFLOW_VERSION` when the fixed workflow block changes. A new stack gets its own
 `skills/<stack>-guardrails-bootstrap/` and a routing entry in
 `project-guardrails-bootstrap`.
 

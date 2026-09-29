@@ -2,7 +2,7 @@
 
 Shared by every `*-guardrails-bootstrap` skill. The skill's `SKILL.md` keeps only
 the rules; this file holds the detail. Install it in the target project as part of
-`AGENTS.md` (short form) and `docs/engineering/HISTORY.md` (the log).
+`AGENTS.md` (short form) and `docs/engineering/HISTORY.md` (the long whys).
 
 ## Why this exists
 
@@ -22,9 +22,9 @@ change. Git history and docs are better homes for that text.
    on…", incident narratives, rejected alternatives or dates. That goes to
    `HISTORY.md`, `DECISIONS.md` or the commit message.
 4. When the why needs more than two lines, write one line plus a stable
-   reference: `// Signed URL, not a stored token. See DECISIONS.md#d-012`.
-5. Reference by stable ID (`D-012`, `H-031`), never by line number or by a doc
-   that may be renamed.
+   reference: `// Signed URL, not a stored token. See HISTORY.md#invite-link`.
+5. Reference by stable anchor (`HISTORY.md#invite-link`, `DECISIONS.md#d-012`),
+   never by line number.
 6. Type annotations, API docblocks consumed by tools (PHPDoc types, JSDoc/TSDoc
    used by the IDE, GDScript `##` exported docs) and license headers are not
    narrative; keep them, keep them terse.
@@ -39,7 +39,7 @@ change. Git history and docs are better homes for that text.
 | Content | Home |
 |---|---|
 | Durable architectural choice and its trade-off | `DECISIONS.md` (entry `D-NNN`) |
-| Bug fix, regression, incident, workaround and its cause | `HISTORY.md` (entry `H-NNN`) |
+| Non-obvious rule, provider quirk, bug fix or workaround and its cause | `HISTORY.md` (anchor slug) |
 | How a module/flow works end to end | `SYSTEM_MAP.md` or `docs/engineering/notes/<area>.md` |
 | What changed in this commit and why | commit message / PR description |
 | Commands, environments, how to verify | `TESTING.md` |
@@ -49,21 +49,29 @@ needs more than `SYSTEM_MAP.md` gives it.
 
 ## `HISTORY.md` format
 
-Newest first. Short entries; this is an index of non-obvious fixes, not a changelog
-of every commit.
+The long *why* behind rules the code enforces: domain rules, provider or
+library quirks, fixes and workarounds. Not an ADR (choices between alternatives
+go to `DECISIONS.md`), not a changelog, not a system map.
+
+If the repository already has an equivalent file (for example `RATIONALE.md`
+or `NOTES.md` with anchors), use it and do not create a second one.
+
+Group entries by area. Each entry has a stable anchor and three fields:
 
 ```markdown
-## H-031 — 2026-01-14 — Invite link opened the wrong screen
+## Accounts
 
-**Symptom:** invited users landed on the dashboard instead of setting a password.
-**Cause:** one signed route served both the invite and the "resume" flow.
-**Fix:** separate route for invites (`InviteLinks::for`).
-**Guard:** `tests/Feature/InviteLinkTest.php`.
-**Code refs:** comment `See HISTORY.md#h-031` in `InviteLinks`.
+<a id="invite-link"></a>
+### Invite links have their own route
+**Rule:** an invite link always opens the set-password screen, never a draft.
+**Why:** one signed route used to serve both flows, so invited users landed on
+the dashboard without a password. Merging the routes again brings that back.
+**Where:** `app/Services/InviteLinks.php`, `tests/Feature/InviteLinkTest.php`
 ```
 
-Add an entry when a fix encodes knowledge that the code alone does not show and
-that someone could undo by "simplifying". Skip trivial fixes.
+Add an entry only when the code alone does not show the reason and someone
+could undo it by "simplifying". Every place listed in **Where** carries a
+one-line comment ending in `See HISTORY.md#<anchor>`.
 
 ## `DECISIONS.md` IDs
 
@@ -97,7 +105,7 @@ roughly how many multi-line narrative comment blocks exist and where they
 concentrate. If the owner wants a cleanup, do it as a separate comment-only
 change:
 
-1. move history worth keeping to `HISTORY.md` / `DECISIONS.md` with IDs;
-2. shorten comments to 1–2 lines, adding `See …#id` where history moved;
+1. move reasons worth keeping to `HISTORY.md` / `DECISIONS.md` with anchors;
+2. shorten comments to 1–2 lines, adding `See …#anchor` where a reason moved;
 3. prove no code changed (AST/token diff, `php -l`, `tsc --noEmit`, tests);
 4. one commit, comment-only, easy to review and revert.
