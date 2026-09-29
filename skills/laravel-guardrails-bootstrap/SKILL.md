@@ -567,9 +567,9 @@ Never invent tooling.
 One file for the change workflow. It replaces the old per-step files (`skills/01-plan-change.md` … `08-*.md`).
 
 1. Copy `references/WORKFLOW.template.md` to `docs/engineering/WORKFLOW.md` (or the repo's docs folder) as is. The block between `guardrails-workflow:start` and `guardrails-workflow:end` is fixed and identical across projects: do not reword, trim or extend it.
-2. Fill only `## Specifics of this project`: per step, what is different here (canonical homes, surfaces and guards, conventions that change a step). Link `TESTING.md`, `SYSTEM_MAP.md` and conventions docs instead of repeating them. Skip steps with nothing specific; aim for under 60 lines.
+2. Fill only `## Specifics of this project`: per step, what is different here (canonical homes, surfaces and guards, conventions that change a step). Link `TESTING.md`, `SYSTEM_MAP.md` and conventions docs instead of repeating them. Skip steps with nothing specific. Terse bullets, but completeness beats length: a project-specific rule, trap, command or heuristic is never dropped to save lines.
 3. Link `WORKFLOW.md` from `AGENTS.md`; do not copy its content there.
-4. Upgrade: if `WORKFLOW.md` exists with an older marker, replace only the fixed block. If the project still has per-step files, move what is project-specific into Specifics, drop what the fixed block already covers, delete the old files and fix every link to them.
+4. Upgrade: if `WORKFLOW.md` exists with an older marker, replace only the fixed block. If the project still has per-step files: first list every project-specific rule, trap, command and heuristic they contain; each one must land in Specifics or in a doc Specifics links to (only generic advice the fixed block states explicitly may be dropped). Check the list against the result before deleting the old files, keep them recoverable (git history, or an archive folder when the project has no git), and fix every link to them.
 
 # PHASE 3 — Validate bootstrap
 
