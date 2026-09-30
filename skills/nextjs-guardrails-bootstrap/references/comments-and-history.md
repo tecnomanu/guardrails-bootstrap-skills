@@ -22,8 +22,8 @@ change. Git history and docs are better homes for that text.
    on…", incident narratives, rejected alternatives or dates. That goes to
    `HISTORY.md`, `DECISIONS.md` or the commit message.
 4. When the why needs more than two lines, write one line plus a stable
-   reference: `// Signed URL, not a stored token. See HISTORY.md#invite-link`.
-5. Reference by stable anchor (`HISTORY.md#invite-link`, `DECISIONS.md#d-012`),
+   reference: `// Ack first, work in a job. See HISTORY.md#webhook-ack`.
+5. Reference by stable anchor (`HISTORY.md#webhook-ack`, `DECISIONS.md#d-012`),
    never by line number.
 6. Type annotations, API docblocks consumed by tools (PHPDoc types, JSDoc/TSDoc
    used by the IDE, GDScript `##` exported docs) and license headers are not
@@ -53,20 +53,21 @@ The long *why* behind rules the code enforces: domain rules, provider or
 library quirks, fixes and workarounds. Not an ADR (choices between alternatives
 go to `DECISIONS.md`), not a changelog, not a system map.
 
-If the repository already has an equivalent file (for example `RATIONALE.md`
-or `NOTES.md` with anchors), use it and do not create a second one.
+If the repository already has an equivalent file (for example a `NOTES.md`
+or an ADR folder with anchors), use it and do not create a second one.
 
 Group entries by area. Each entry has a stable anchor and three fields:
 
 ```markdown
-## Accounts
+## Integrations
 
-<a id="invite-link"></a>
-### Invite links have their own route
-**Rule:** an invite link always opens the set-password screen, never a draft.
-**Why:** one signed route used to serve both flows, so invited users landed on
-the dashboard without a password. Merging the routes again brings that back.
-**Where:** `app/Services/InviteLinks.php`, `tests/Feature/InviteLinkTest.php`
+<a id="webhook-ack"></a>
+### Webhooks are acknowledged before they are processed
+**Rule:** the webhook endpoint stores the event and returns 200; a queued job
+does the work.
+**Why:** the provider retries anything slower than its timeout, so processing
+inline produced duplicate side effects. Moving the work back inline brings that back.
+**Where:** `app/Http/Controllers/WebhookController.php`, `tests/Feature/WebhookTest.php`
 ```
 
 Add an entry only when the code alone does not show the reason and someone

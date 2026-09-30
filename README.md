@@ -45,7 +45,7 @@ rejected. The installed rules keep comments to 1–2 lines of *why* and move the
 rest to `HISTORY.md` / `DECISIONS.md`, referenced by a stable anchor:
 
 ```php
-// Invite links never share the resume route. See HISTORY.md#invite-link
+// Ack first, work in a job: the provider retries slow responses. See HISTORY.md#webhook-ack
 ```
 
 They also forbid personal data, machine-local paths and AI-tool metadata in

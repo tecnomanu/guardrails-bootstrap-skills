@@ -1,4 +1,4 @@
-<!-- guardrails-workflow:start v2.1 astro-react -->
+<!-- guardrails-workflow:start v2.2 astro-react -->
 <!-- Fixed block. Do not edit; replace it whole to upgrade. Project notes go below the end marker. -->
 
 # Change workflow
@@ -30,7 +30,7 @@ Do not edit yet.
 - No casual dependencies; justify any new one.
 - Preserve logs, metrics and error reporting; never log secrets or personal data.
 - Comments: 1–2 lines of *why*. Longer reasons go to the project's long-why
-  file (`HISTORY.md` or its equivalent, e.g. `RATIONALE.md`) or `DECISIONS.md`,
+  file (`HISTORY.md` or an existing equivalent) or `DECISIONS.md`,
   and the comment points to the anchor.
 - Review your own final diff before calling it done.
 
